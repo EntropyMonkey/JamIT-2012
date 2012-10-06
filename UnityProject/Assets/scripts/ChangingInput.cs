@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-class ChangingInput : MonoBehaviour
+public class ChangingInput : MonoBehaviour
 {
 	public enum KEYS { JUMP, ACCELERATE, DECELERATE };
 
@@ -13,6 +13,9 @@ class ChangingInput : MonoBehaviour
 
 		if (key == KEYS.ACCELERATE)
 			return Input.GetKeyDown(KeyCode.D) ? true : false;
+
+		if (key == KEYS.DECELERATE)
+			return Input.GetKeyDown(KeyCode.A) ? true : false;
 
 		return false;		
 	}
@@ -26,6 +29,9 @@ class ChangingInput : MonoBehaviour
 		if (key == KEYS.ACCELERATE)
 			return Input.GetKey(KeyCode.D) ? true : false;
 
+		if (key == KEYS.DECELERATE)
+			return Input.GetKey(KeyCode.A) ? true : false;
+
 		return false;
 	}
 
@@ -37,6 +43,9 @@ class ChangingInput : MonoBehaviour
 
 		if (key == KEYS.ACCELERATE)
 			return Input.GetKeyUp(KeyCode.D) ? true : false;
+
+		if (key == KEYS.DECELERATE)
+			return Input.GetKeyUp(KeyCode.A) ? true : false;
 
 		return false;
 	}
