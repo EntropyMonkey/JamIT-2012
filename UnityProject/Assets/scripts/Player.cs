@@ -77,9 +77,10 @@ public class Player : MonoBehaviour
 		fsm.ChangeState(pStateRun);
 	}
 
-	public void Die(Vector3 cameraPosition)
+	public void Die(Vector3 cameraPosition, Camera cam)
 	{
 		Vector3 newPos = cameraPosition;
+		newPos.x -= cam.GetScreenWidth() * 0.5f;
 		newPos.y = PlayerSettings.SpawnPositionY;
 		newPos.z = 0;
 
