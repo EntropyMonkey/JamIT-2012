@@ -7,6 +7,9 @@ public class Player : MonoBehaviour
 
 	int collisions;
 
+	CharacterController characterController;
+	public Vector2 Velocity = new Vector2(10, 0);
+
 	public int id
 	{
 		get;
@@ -70,6 +73,7 @@ public class Player : MonoBehaviour
 		id = nextFreeId++;
 
 		input = GetComponent<ChangingInput>();
+		characterController = GetComponent<CharacterController>();
 
 		fsm = new FiniteStateMachine<Player>();
 
@@ -88,7 +92,7 @@ public class Player : MonoBehaviour
 	void Reset(Vector3 position)
 	{
 		transform.position = position;
-		rigidbody.velocity = Vector3.zero;
+		//rigidbody.velocity = Vector3.zero;
 		fsm.ChangeState(pStateFall);
 	}
 
@@ -124,7 +128,33 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		fsm.Update();
+		if (characterController.isGrounded)
+		{
+			Velocity.y = 0;
+			if (input.KeyDown(ChangingInput.KEYS.JUMP))
+			{
+				Velocity.y = settings.JumpSpeed;
+			}
+		}
+
+		if (input.KeyDown(ChangingInput.KEYS.ACCELERATE))
+		{
+			Velocity.x = 15;
+		}
+		else if (input.KeyDown(ChangingInput.KEYS.DECELERATE))
+		{
+			Velocity.x = 1;
+		}
+		else
+		{
+			Velocity.x = 10;
+		}
+
+		Velocity.y -= settings.Gravity * Time.deltaTime;
+
+		characterController.Move(new Vector3(Velocity.x * Time.deltaTime, Velocity.y * Time.deltaTime, 0));
+
+		//fsm.Update();
 
 		if (Input.GetKey(KeyCode.Space))
 			Reset(new Vector3(0, 2, 0));

@@ -9,7 +9,7 @@ class LevelGenerator : MonoBehaviour
     private Vector3 StartPos;
     private Vector3 EndPos;
 
-    public float size = 1.85F;  //GO size = size * 2
+    public float size = 2F;  //GO size = size * 2
 
     void Start()
     {
@@ -30,7 +30,7 @@ class LevelGenerator : MonoBehaviour
     {
         if(GameCamera.transform.position.x + 20 > EndPos.x)
         {
-            int r = Random.Range(0, 3);
+            int r = Random.Range(0, 2);
 			int i = 0;
             if (r == i++)
             {
