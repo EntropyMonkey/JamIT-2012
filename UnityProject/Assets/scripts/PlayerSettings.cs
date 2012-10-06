@@ -11,4 +11,6 @@ public class PlayerSettings
 
 	public float MaxJumpTime = 0.2f;
 	public Vector2 JumpSpeed = new Vector2(0, 80);
+
+	public const string Tag = "Player";
 }

@@ -43,6 +43,13 @@ public class Player : MonoBehaviour
 		private set;
 	}
 
+	void Awake()
+	{
+		tag = PlayerSettings.Tag;
+		gameObject.layer = LayerMask.NameToLayer(PlayerSettings.Tag);
+		Physics.IgnoreLayerCollision(gameObject.layer, gameObject.layer);
+	}
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -57,7 +64,6 @@ public class Player : MonoBehaviour
 		pStateFall = ScriptableObject.CreateInstance<PStateFall>();
 
 		fsm.Configure(this, pStateRun, null);
-
 	}
 
 	void Reset()
