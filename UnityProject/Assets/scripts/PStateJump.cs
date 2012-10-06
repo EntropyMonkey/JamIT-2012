@@ -16,7 +16,9 @@ class PStateJump : FSMState<Player>
 		if (jumpTimer < player.settings.MaxJumpTime &&
 			player.input.KeyDown(ChangingInput.KEYS.JUMP))
 		{
-			player.rigidbody.AddForce(new Vector3(0, player.settings.JumpSpeed * Time.deltaTime),
+			player.rigidbody.AddForce(new Vector3(
+				player.settings.JumpSpeed.x * Time.deltaTime,
+				player.settings.JumpSpeed.y * Time.deltaTime),
 				ForceMode.Impulse);
 		}
 		else
