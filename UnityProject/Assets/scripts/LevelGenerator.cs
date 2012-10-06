@@ -9,10 +9,11 @@ class LevelGenerator : MonoBehaviour
     private Vector3 StartPos;
     private Vector3 EndPos;
 
-    public const float size = 1.85F;  //GO size = size * 2
+    public float size = 1.85F;  //GO size = size * 2
 
     void Start()
     {
+		GameCamera = Camera.main;
         StartPos = GameCamera.transform.position;
         EndPos = StartPos;
         EndPos += new Vector3(0, -2, 0);
