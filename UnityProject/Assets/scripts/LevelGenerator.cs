@@ -3,13 +3,15 @@ using UnityEngine;
 
 class LevelGenerator : MonoBehaviour
 {
-    public Camera GameCamera;
+    private Camera GameCamera;
     public GameObject prefab;
     private Vector3 StartPos;
     private Vector3 EndPos;
-    public const float size = 1.85F;  //GO size = size * 2
+	//Half the size of the game object
+    public float size = 1.85F;
     void Start()
     {
+		GameCamera = Camera.main;
         StartPos = GameCamera.transform.position;
         EndPos = StartPos;
         EndPos += new Vector3(0, -2, 0);
