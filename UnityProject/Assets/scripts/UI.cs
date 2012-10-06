@@ -43,7 +43,7 @@ public class UI : MonoBehaviour
             GUI.Box(new Rect(x + 90, 68, 200, 30), "" + p.input.AccelerateKey, style);
             GUI.Box(new Rect(x + 90, 98, 200, 30), "" + p.input.DecelerateKey, style);
 
-            x += 300;
+            x += Screen.width / 4F;
 		}
 
         // + ": Decelerate: " + p.input.DecelerateKey + "\tJump: " + p.input.JumpKey + "\tAccelerate: " + p.input.AccelerateKey
