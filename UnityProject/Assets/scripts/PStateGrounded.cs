@@ -5,7 +5,6 @@ public class PStateGrounded : FSMState<Player>
 {
 	public override void Enter(Player player)
 	{
-		Debug.Log(player.id + " enter grounded.");
 	}
 
 	public override void Execute(Player player)

@@ -7,7 +7,6 @@ class PStateJump : FSMState<Player>
 
 	public override void Enter(Player player)
 	{
-		Debug.Log(player.id + " enter jump.");
 		jumpTimer = 0;
 	}
 
