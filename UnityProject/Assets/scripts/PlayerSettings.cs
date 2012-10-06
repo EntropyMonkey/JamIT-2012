@@ -13,4 +13,7 @@ public class PlayerSettings
 	public Vector2 JumpSpeed = new Vector2(0, 80);
 
 	public const string Tag = "Player";
+
+	public const float SpawnPositionY = 2;
+	public const float PlatformSize = 3.7f;
 }

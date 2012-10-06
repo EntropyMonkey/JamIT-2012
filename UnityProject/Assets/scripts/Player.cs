@@ -70,20 +70,48 @@ public class Player : MonoBehaviour
 		collisions = 0;
 	}
 
-	void Reset()
+	void Reset(Vector3 position)
 	{
-		transform.position = new Vector3(0, 2, 0);
+		transform.position = position;
 		rigidbody.velocity = Vector3.zero;
 		fsm.ChangeState(pStateRun);
 	}
-	
+
+	public void Die(Vector3 cameraPosition)
+	{
+		Vector3 newPos = cameraPosition;
+		newPos.y = PlayerSettings.SpawnPositionY;
+		newPos.z = 0;
+
+		// only spawn over a platform
+		bool foundPlatform = false;
+		int loopCountdown = 10;
+		while (!foundPlatform)
+		{
+			RaycastHit hitInfo;
+			// if there is nothing below for 10m, take a new position
+			Physics.Raycast(newPos, Vector3.down, out hitInfo, 10.0f);
+
+			if (hitInfo.collider == null)
+			{
+				newPos.x += PlayerSettings.PlatformSize;
+			}
+			else foundPlatform = true;
+
+			if (loopCountdown-- <= 0)
+				break;
+		}
+
+		Reset(newPos);
+	}
+
 	// Update is called once per frame
 	void Update () 
 	{
 		fsm.Update();
 
 		if (Input.GetKey(KeyCode.Space))
-			Reset();
+			Reset(new Vector3(0, 2, 0));
 	}
 
 	void OnCollisionEnter(Collision collision)
