@@ -11,7 +11,7 @@ class PStateJump : FSMState<Player>
 		jumpTimer = 0;
 	}
 
-	public override void Execute(Player player)
+	public override void ExecuteFixed(Player player)
 	{
 		if (jumpTimer < player.settings.MaxJumpTime &&
 			player.input.KeyDown(ChangingInput.KEYS.JUMP))
