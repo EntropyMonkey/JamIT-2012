@@ -11,7 +11,7 @@ public class PlatformRemover : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (!renderer.isVisible )//&& transform.position.x < gameCamera.transform.position.x)
-            Destroy(this);
+        if (transform.position.x < gameCamera.transform.position.x-30 )
+            Destroy(gameObject);
 	}
 }

@@ -24,24 +24,30 @@ class LevelGenerator : MonoBehaviour
 
     void Update()
     {
-        if(GameCamera.transform.position.x +4 > EndPos.x)
+        if(GameCamera.transform.position.x + 20 > EndPos.x)
         {
-            int r = Random.Range(0, 2);
-            if (r == 0)
+            int r = Random.Range(0, 5);
+			int i = 0;
+            if (r == i++)
             {
                 GenerateNormalScretch(EndPos);
                 EndPos += new Vector3(size*2, 0, 0);
+            }
+			else if(r == i++)
+			{
+				GenerateNormalScretch(EndPos);
+                EndPos += new Vector3(size * 2, 0, 0);
                 GenerateNormalScretch(EndPos);
                 EndPos += new Vector3(size * 2, 0, 0);
-            }
-            else if (r == 1)
+			}
+            else if (r == i++)
             {
                 GenerateNormalScretch(EndPos);
                 EndPos += new Vector3(size * 4, 0, 0);
                 GenerateNormalScretch(EndPos);
                 EndPos += new Vector3(size * 2, 0, 0);
             }
-            else if (r == 2)
+            else if (r == i++)
             {
                 GenerateNormalScretch(EndPos);
                 EndPos += new Vector3(size * 3, 0, 0);
