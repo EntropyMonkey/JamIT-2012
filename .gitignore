@@ -1,7 +1,7 @@
-UnityProject\Assets\TK2DROOT\
-UnityProject\Library
-UnityProject\Temp
-UnityProject\obj
+UnityProject/Assets/TK2DROOT/
+UnityProject/Library/
+UnityProject/Temp/
+UnityProject/obj/
 
 *.csproj
 *.sln
