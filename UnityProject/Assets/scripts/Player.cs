@@ -51,6 +51,12 @@ public class Player : MonoBehaviour
 		private set;
 	}
 
+	public int points
+	{
+		get;
+		set;
+	}
+
 	void Awake()
 	{
 		tag = PlayerSettings.Tag;
@@ -76,6 +82,7 @@ public class Player : MonoBehaviour
 		fsm.Configure(this, pStateFall, pStateGlobal);
 
 		collisions = 0;
+		points = 0;
 	}
 
 	void Reset(Vector3 position)
