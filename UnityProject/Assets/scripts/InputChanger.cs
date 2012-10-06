@@ -66,8 +66,9 @@ public class InputChanger : MonoBehaviour {
         Debug.Log("--------------");
         for (int i = 0; i < ChangingInput.Instances.Count; ++i) //Set new keys
         {
-            ChangingInput.Instances[i].JumpKey = useableKeys[i*2];
-            ChangingInput.Instances[i].AccelerateKey = useableKeys[i * 2 + 1];
+            ChangingInput.Instances[i].JumpKey = useableKeys[i*3];
+            ChangingInput.Instances[i].AccelerateKey = useableKeys[i * 3 + 1];
+            ChangingInput.Instances[i].DecelerateKey = useableKeys[i * 3 + 2];
             Debug.Log(i + ": " + ChangingInput.Instances[i].JumpKey+ " , " + ChangingInput.Instances[i].AccelerateKey);
         }
     }
