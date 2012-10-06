@@ -3,7 +3,6 @@ using System.Collections;
 
 public class UI : MonoBehaviour
 {
-	int score = 0;
 	GameObject[] players;
 	
 	void Start()

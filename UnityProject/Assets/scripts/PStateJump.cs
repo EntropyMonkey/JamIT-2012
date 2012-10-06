@@ -7,11 +7,11 @@ class PStateJump : FSMState<Player>
 
 	public override void Enter(Player player)
 	{
-		Debug.Log("(" + player.id + ") jump: enter");
+		Debug.Log(player.id + " enter jump.");
 		jumpTimer = 0;
 	}
 
-	public override void Execute(Player player)
+	public override void ExecuteFixed(Player player)
 	{
 		if (jumpTimer < player.settings.MaxJumpTime &&
 			player.input.KeyDown(ChangingInput.KEYS.JUMP))

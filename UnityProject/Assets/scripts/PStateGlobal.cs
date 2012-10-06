@@ -1,20 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-class PStateRun : FSMState<Player>
+public class PStateGlobal : FSMState<Player>
 {
 	public override void Enter(Player player)
 	{
-		Debug.Log("(" + player.id + ") run: enter");
 	}
 
-	public override void Execute(Player player)
+	public override void ExecuteFixed(Player player)
 	{
 		if (player.input.KeyDown(ChangingInput.KEYS.ACCELERATE))
 		{
 			player.rigidbody.AddForce(
 				new Vector3(
-					player.settings.MaxRunSpeed * Time.deltaTime, 0, 0), 
+					player.settings.MaxRunSpeed * Time.deltaTime, 0, 0),
 					ForceMode.Impulse);
 
 			if (player.rigidbody.velocity.x > player.settings.MaxRunSpeed)
@@ -44,11 +43,6 @@ class PStateRun : FSMState<Player>
 				player.rigidbody.velocity,
 				new Vector3(player.settings.StandardRunSpeed, 0, 0),
 				player.settings.ToStandardSpeedSmoothing * Time.deltaTime);
-		}
-
-		if (player.input.KeyDown(ChangingInput.KEYS.JUMP))
-		{
-			player.fsm.ChangeState(player.pStateJump);
 		}
 	}
 

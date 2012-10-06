@@ -33,7 +33,13 @@ public class Player : MonoBehaviour
 		private set;
 	}
 
-	public FSMState<Player> pStateRun
+	public FSMState<Player> pStateGlobal
+	{
+		get;
+		private set;
+	}
+
+	public FSMState<Player> pStateGrounded
 	{
 		get;
 		private set;
@@ -61,11 +67,13 @@ public class Player : MonoBehaviour
 
 		fsm = new FiniteStateMachine<Player>();
 
+		pStateGlobal = ScriptableObject.CreateInstance<PStateGlobal>();
+
 		pStateJump = ScriptableObject.CreateInstance<PStateJump>();
-		pStateRun = ScriptableObject.CreateInstance<PStateRun>();
+		pStateGrounded = ScriptableObject.CreateInstance<PStateGrounded>();
 		pStateFall = ScriptableObject.CreateInstance<PStateFall>();
 
-		fsm.Configure(this, pStateRun, null);
+		fsm.Configure(this, pStateFall, pStateGlobal);
 
 		collisions = 0;
 	}
@@ -74,12 +82,13 @@ public class Player : MonoBehaviour
 	{
 		transform.position = position;
 		rigidbody.velocity = Vector3.zero;
-		fsm.ChangeState(pStateRun);
+		fsm.ChangeState(pStateFall);
 	}
 
-	public void Die(Vector3 cameraPosition)
+	public void Die(Vector3 cameraPosition, Camera cam)
 	{
 		Vector3 newPos = cameraPosition;
+		//newPos.x -= cam.GetScreenWidth() * 0.5f;
 		newPos.y = PlayerSettings.SpawnPositionY;
 		newPos.z = 0;
 
@@ -106,7 +115,7 @@ public class Player : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update () 
+	void Update ()
 	{
 		fsm.Update();
 
@@ -114,9 +123,19 @@ public class Player : MonoBehaviour
 			Reset(new Vector3(0, 2, 0));
 	}
 
+	void FixedUpdate()
+	{
+		fsm.UpdateFixed();
+	}
+
+	void LateUpdate()
+	{
+		fsm.UpdateLate();
+	}
+
 	void OnCollisionEnter(Collision collision)
 	{
-		fsm.ChangeState(pStateRun);
+		fsm.ChangeState(pStateGrounded);
 		collisions++;
 	}
 
