@@ -5,6 +5,8 @@ public class Player : MonoBehaviour
 {
 	static int nextFreeId = 0;
 
+	int collisions;
+
 	public int id
 	{
 		get;
@@ -64,6 +66,8 @@ public class Player : MonoBehaviour
 		pStateFall = ScriptableObject.CreateInstance<PStateFall>();
 
 		fsm.Configure(this, pStateRun, null);
+
+		collisions = 0;
 	}
 
 	void Reset()
@@ -85,10 +89,13 @@ public class Player : MonoBehaviour
 	void OnCollisionEnter(Collision collision)
 	{
 		fsm.ChangeState(pStateRun);
+		collisions++;
 	}
 
 	void OnCollisionExit(Collision collision)
 	{
-		fsm.ChangeState(pStateFall);
+		collisions--;
+		if (collisions <= 0)
+			fsm.ChangeState(pStateFall);
 	}
 }
