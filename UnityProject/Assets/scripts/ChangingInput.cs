@@ -1,18 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 class ChangingInput : MonoBehaviour
 {
 	public enum KEYS { JUMP, ACCELERATE, DECELERATE };
 
+    [HideInInspector]
+    public static List<ChangingInput> Instances = new List<ChangingInput>();
+
+    public KeyCode JumpKey = KeyCode.W;
+    public KeyCode AccelerateKey = KeyCode.H;
+	
+	void Start()
+	{
+		Instances.Add(this);
+	}
+
 	public bool KeyPressed(KEYS key)
 	{
 		// TODO map the key to the according currently active keyboard key
 		if (key == KEYS.JUMP)
-			return Input.GetKeyDown(KeyCode.W) ? true : false;
+            return Input.GetKeyDown(JumpKey) ? true : false;
 
 		if (key == KEYS.ACCELERATE)
-			return Input.GetKeyDown(KeyCode.D) ? true : false;
+			return Input.GetKeyDown(AccelerateKey) ? true : false;
 
 		return false;		
 	}
@@ -21,10 +33,10 @@ class ChangingInput : MonoBehaviour
 	{
 		// TODO map the key to the according currently active keyboard key
 		if (key == KEYS.JUMP)
-			return Input.GetKey(KeyCode.W) ? true : false;
+            return Input.GetKey(JumpKey) ? true : false;
 
 		if (key == KEYS.ACCELERATE)
-			return Input.GetKey(KeyCode.D) ? true : false;
+			return Input.GetKey(AccelerateKey) ? true : false;
 
 		return false;
 	}
@@ -33,10 +45,10 @@ class ChangingInput : MonoBehaviour
 	{
 		// TODO map the key to the according currently active keyboard key
 		if (key == KEYS.JUMP)
-			return Input.GetKeyUp(KeyCode.W) ? true : false;
+            return Input.GetKeyUp(JumpKey) ? true : false;
 
 		if (key == KEYS.ACCELERATE)
-			return Input.GetKeyUp(KeyCode.D) ? true : false;
+			return Input.GetKeyUp(AccelerateKey) ? true : false;
 
 		return false;
 	}
