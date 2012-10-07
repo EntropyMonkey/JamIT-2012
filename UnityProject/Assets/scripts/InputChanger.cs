@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class InputChanger : MonoBehaviour {
 
-    private List<KeyCode> NormalKeys = new List<KeyCode>();
+    private static List<KeyCode> NormalKeys = new List<KeyCode>();
 
 	// Use this for initialization
 	void Start () {
@@ -39,17 +39,44 @@ public class InputChanger : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (Input.GetKeyDown(KeyCode.Return))
-            ShuffleKeys();
+            ShuffleAllKeys();
+        if (Input.GetKeyDown(KeyCode.Home))
+            ShuffleBoostKeys();
 	}
 
-    public void ShuffleKeys()
+    public static void ShuffleBoostKeys()
     {
         var unuseableKeys = new List<KeyCode>();
         for (int i = 0; i < ChangingInput.Instances.Count; ++i)
         {
             unuseableKeys.Add(ChangingInput.Instances[i].JumpKey);
-            unuseableKeys.Add(ChangingInput.Instances[i].AccelerateKey);
-			unuseableKeys.Add(ChangingInput.Instances[i].DecelerateKey);
+            unuseableKeys.Add(ChangingInput.Instances[i].BoostKey);
+        }
+        var useableKeys = new List<KeyCode>(NormalKeys);
+        useableKeys.RemoveAll(k => unuseableKeys.Contains(k));
+
+        for (int i = 0; i < useableKeys.Count; ++i) //Randomize array
+        {
+            int newPos = Random.Range(0, useableKeys.Count);
+            KeyCode otherKey = useableKeys[newPos];
+            useableKeys[newPos] = useableKeys[i];
+            useableKeys[i] = otherKey;
+        }
+
+        Debug.Log("--------------");
+        for (int i = 0; i < ChangingInput.Instances.Count; ++i) //Set new keys
+        {
+            ChangingInput.Instances[i].BoostKey = useableKeys[i];
+        }
+    }
+
+    public static void ShuffleAllKeys()
+    {
+        var unuseableKeys = new List<KeyCode>();
+        for (int i = 0; i < ChangingInput.Instances.Count; ++i)
+        {
+            unuseableKeys.Add(ChangingInput.Instances[i].JumpKey);
+            unuseableKeys.Add(ChangingInput.Instances[i].BoostKey);
         }
 
         var useableKeys = new List<KeyCode>(NormalKeys);
@@ -66,10 +93,9 @@ public class InputChanger : MonoBehaviour {
         Debug.Log("--------------");
         for (int i = 0; i < ChangingInput.Instances.Count; ++i) //Set new keys
         {
-            ChangingInput.Instances[i].JumpKey = useableKeys[i*3];
-            ChangingInput.Instances[i].AccelerateKey = useableKeys[i * 3 + 1];
-            ChangingInput.Instances[i].DecelerateKey = useableKeys[i * 3 + 2];
-            Debug.Log(i + ": " + ChangingInput.Instances[i].JumpKey+ " , " + ChangingInput.Instances[i].AccelerateKey);
+            ChangingInput.Instances[i].JumpKey = useableKeys[i*2];
+            ChangingInput.Instances[i].BoostKey = useableKeys[i * 2+1];
+            Debug.Log(i + ": " + ChangingInput.Instances[i].JumpKey+ " , " + ChangingInput.Instances[i].BoostKey);
         }
     }
 }

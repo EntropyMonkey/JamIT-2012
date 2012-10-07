@@ -21,7 +21,7 @@ public class MonkeyCamera : MonoBehaviour
 		{
 			if (!monkey.renderer.isVisible)
 			{
-				monkey.GetComponent<Player>().Die(transform.position, camera);
+				monkey.GetComponent<Player>().Die();
 			}
 		}
 

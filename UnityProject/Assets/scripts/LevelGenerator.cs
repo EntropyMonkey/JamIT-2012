@@ -34,17 +34,17 @@ class LevelGenerator : MonoBehaviour
 			int i = 0;
             if (r == i++)
             {
-                SpawnPlatform(EndPos);
+				SpawnPlatform(EndPos + Vector3.down * 5);
                 EndPos += new Vector3(size * 2, 0, 0);
 			}
             else if (r == i++)
             {
-                SpawnPlatform(EndPos);
+				SpawnPlatform(EndPos + Vector3.down * 5);
                 EndPos += new Vector3(size * 3, 0, 0);
             }
             else if (r == i++)
             {
-                SpawnPlatform(EndPos);
+				SpawnPlatform(EndPos + Vector3.down * 5);
                 EndPos += new Vector3(size * 4, 0, 0);
             }
         }
@@ -53,6 +53,7 @@ class LevelGenerator : MonoBehaviour
     private void SpawnPlatform(Vector3 pos)
     {
         GameObject go = Instantiate(platformPrefab) as GameObject;
+		pos.z += 0.1f;
         go.transform.position = pos;
     }
 

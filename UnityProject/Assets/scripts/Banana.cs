@@ -13,8 +13,8 @@ public class Banana : MonoBehaviour
 		if (other.collider.tag == PlayerSettings.Tag)
 		{
 			Player player = other.gameObject.GetComponent<Player>();
-			player.points++;
-			Destroy(gameObject);
+            player.points++;
+            Destroy(gameObject);
 		}
 	}
 }

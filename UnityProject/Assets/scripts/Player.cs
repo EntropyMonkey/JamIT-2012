@@ -1,14 +1,15 @@
 using UnityEngine;
 using System.Collections;
 
-public class Player : MonoBehaviour 
+public class Player : MonoBehaviour
 {
 	static int nextFreeId = 0;
 
-	int collisions;
-
 	CharacterController characterController;
 	public Vector2 Velocity = new Vector2(10, 0);
+
+    public float DeathTimePenalty = 2.0f;
+    private float timeSinceDeath = 0F;
 
 	public int id
 	{
@@ -24,41 +25,13 @@ public class Player : MonoBehaviour
 
 	public PlayerSettings settings;
 
-	public FiniteStateMachine<Player> fsm
-	{
-		get;
-		private set;
-	}
-
-	public FSMState<Player> pStateJump
-	{
-		get;
-		private set;
-	}
-
-	public FSMState<Player> pStateGlobal
-	{
-		get;
-		private set;
-	}
-
-	public FSMState<Player> pStateGrounded
-	{
-		get;
-		private set;
-	}
-
-	public FSMState<Player> pStateFall
-	{
-		get;
-		private set;
-	}
-
 	public int points
 	{
 		get;
 		set;
 	}
+
+    private bool dead = false;
 
 	void Awake()
 	{
@@ -68,118 +41,101 @@ public class Player : MonoBehaviour
 	}
 
 	// Use this for initialization
-	void Start ()
+	void Start()
 	{
 		id = nextFreeId++;
 
 		input = GetComponent<ChangingInput>();
 		characterController = GetComponent<CharacterController>();
 
-		fsm = new FiniteStateMachine<Player>();
-
-		pStateGlobal = ScriptableObject.CreateInstance<PStateGlobal>();
-
-		pStateJump = ScriptableObject.CreateInstance<PStateJump>();
-		pStateGrounded = ScriptableObject.CreateInstance<PStateGrounded>();
-		pStateFall = ScriptableObject.CreateInstance<PStateFall>();
-
-		fsm.Configure(this, pStateFall, pStateGlobal);
-
-		collisions = 0;
 		points = 0;
+
+        /*var color = renderer.material.color;
+        color.a = 255;
+        renderer.material.color = color;*/
+		renderer.material.color = settings.Color;
 	}
 
 	void Reset(Vector3 position)
 	{
 		transform.position = position;
-		//rigidbody.velocity = Vector3.zero;
-		fsm.ChangeState(pStateFall);
 	}
 
-	public void Die(Vector3 cameraPosition, Camera cam)
+	public void Die()
 	{
-		Vector3 newPos = cameraPosition;
-		//newPos.x -= cam.GetScreenWidth() * 0.5f;
-		newPos.y = PlayerSettings.SpawnPositionY;
-		newPos.z = 0;
-
-		// only spawn over a platform
-		bool foundPlatform = false;
-		int loopCountdown = 10;
-		while (!foundPlatform)
-		{
-			RaycastHit hitInfo;
-			// if there is nothing below for 10m, take a new position
-			Physics.Raycast(newPos, Vector3.down, out hitInfo, 10.0f);
-
-			if (hitInfo.collider == null)
-			{
-				newPos.x += PlayerSettings.PlatformSize;
-			}
-			else foundPlatform = true;
-
-			if (loopCountdown-- <= 0)
-				break;
-		}
-
-		Reset(newPos);
+        timeSinceDeath = 0;
+        dead = true;
 	}
 
 	// Update is called once per frame
-	void Update ()
+	void Update()
 	{
-		if (characterController.isGrounded)
+		timeSinceDeath += Time.deltaTime;	
+        if (dead == true && timeSinceDeath > DeathTimePenalty)
+        {
+            Respawn();
+        }
+        else
+        {
+            if (characterController.isGrounded)
+            {
+                Velocity.y = 0;
+                if (input.KeyDown(ChangingInput.KEYS.JUMP))
+                {
+                    Velocity.y = settings.JumpSpeed;
+                }
+            }
+
+            Velocity.x = 10;
+
+            Velocity.y -= settings.Gravity * Time.deltaTime;
+
+            characterController.Move(new Vector3(Velocity.x * Time.deltaTime, Velocity.y * Time.deltaTime, 0));
+
+            if (Input.GetKey(KeyCode.Space))
+                Reset(new Vector3(0, 2, 0));
+        }
+	}
+
+	void OnControllerColliderHit(ControllerColliderHit hit)
+	{
+		if (hit.normal.y < 0)
 		{
 			Velocity.y = 0;
-			if (input.KeyDown(ChangingInput.KEYS.JUMP))
-			{
-				Velocity.y = settings.JumpSpeed;
-			}
 		}
+	}
 
-		if (input.KeyDown(ChangingInput.KEYS.ACCELERATE))
+    private void Respawn()
+    {
+		if(Camera.current != null)
 		{
-			Velocity.x = 15;
+	        Vector3 newPos = Camera.current.transform.position;
+	        //newPos.x -= cam.GetScreenWidth() * 0.5f;
+	        newPos.y = PlayerSettings.SpawnPositionY;
+	        newPos.z = 0;
+	
+	        // only spawn over a platform
+	        bool foundPlatform = false;
+	        int loopCountdown = 10;
+	        while (!foundPlatform)
+	        {
+	            RaycastHit hitInfo;
+	            // if there is nothing below for 10m, take a new position
+	            Physics.Raycast(newPos, Vector3.down, out hitInfo, 10.0f);
+	
+	            if (hitInfo.collider == null)
+	            {
+	                newPos.x += PlayerSettings.PlatformSize;
+	            }
+	            else foundPlatform = true;
+	
+	            if (loopCountdown-- <= 0)
+	                break;
+	        }
+			dead = false;
+			timeSinceDeath = 0F;
+	        Reset(newPos);
 		}
-		else if (input.KeyDown(ChangingInput.KEYS.DECELERATE))
-		{
-			Velocity.x = 1;
-		}
-		else
-		{
-			Velocity.x = 10;
-		}
+    }
 
-		Velocity.y -= settings.Gravity * Time.deltaTime;
-
-		characterController.Move(new Vector3(Velocity.x * Time.deltaTime, Velocity.y * Time.deltaTime, 0));
-
-		//fsm.Update();
-
-		if (Input.GetKey(KeyCode.Space))
-			Reset(new Vector3(0, 2, 0));
-	}
-
-	void FixedUpdate()
-	{
-		fsm.UpdateFixed();
-	}
-
-	void LateUpdate()
-	{
-		fsm.UpdateLate();
-	}
-
-	void OnCollisionEnter(Collision collision)
-	{
-		fsm.ChangeState(pStateGrounded);
-		collisions++;
-	}
-
-	void OnCollisionExit(Collision collision)
-	{
-		collisions--;
-		if (collisions <= 0)
-			fsm.ChangeState(pStateFall);
-	}
 }
