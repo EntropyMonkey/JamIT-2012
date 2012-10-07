@@ -5,7 +5,7 @@ using System.Collections;
 public class PlayerSettings
 {
 	public float Gravity = 9.8f;
-	public float JumpSpeed = 15;
+	public float JumpSpeed = 10.5F;
 
 	//public float MaxRunSpeed = 10;
 	//public float StandardRunSpeed = 5;

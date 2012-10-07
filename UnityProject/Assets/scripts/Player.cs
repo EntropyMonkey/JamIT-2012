@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     public float DeathTimePenalty = 2.2f;// Changes to 2.0F on first death
     private float timeSinceDeath = 0F;
 
+    private float boostSpeed = 8;
+
 	public int id
 	{
 		get;
@@ -92,9 +94,12 @@ public class Player : MonoBehaviour
 
             Velocity.x = 10;
 
+            if(input.KeyDown(ChangingInput.KEYS.BOOST))
+                Velocity.x += boostSpeed;
+
             Velocity.y -= settings.Gravity * Time.deltaTime;
 
-            characterController.Move(new Vector3(Velocity.x * Time.deltaTime, Velocity.y * Time.deltaTime, 0));
+            characterController.Move(new Vector3(Velocity.x  * Time.deltaTime, Velocity.y * Time.deltaTime, 0));
 
             if (Input.GetKey(KeyCode.Space))
                 Reset(new Vector3(0, 2, 0));
@@ -114,7 +119,7 @@ public class Player : MonoBehaviour
 		if(Camera.current != null)
 		{
 	        Vector3 newPos = Camera.current.transform.position;
-	        //newPos.x -= cam.GetScreenWidth() * 0.5f;
+            newPos.x -= 5;
 	        newPos.y = PlayerSettings.SpawnPositionY;
 	        newPos.z = 0;
 	
@@ -129,7 +134,7 @@ public class Player : MonoBehaviour
 	
 	            if (hitInfo.collider == null)
 	            {
-	                newPos.x += PlayerSettings.PlatformSize;
+	                newPos.x += PlayerSettings.PlatformSize/2f;
 	            }
 	            else foundPlatform = true;
 	

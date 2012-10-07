@@ -34,12 +34,12 @@ class LevelGenerator : MonoBehaviour
     {
         if(GameCamera.transform.position.x + 20 > EndPos.x)
         {
-            int r = Random.Range(0, 10);
+            int r = Random.Range(0, 8);
             if (r == 0) //Spawn single platform
             {
 				SpawnPlatform(EndPos + Vector3.down * 5);
                 EndPos += new Vector3(PlatformSize, 0, 0);
-                EndPos += new Vector3(Random.RandomRange(3F, 6F), 0, 0);
+                EndPos += new Vector3(Random.RandomRange(1F, 3F), 0, 0);
                 PossiblySpawnBanana(EndPos);
 			}
             if (r == 1) //Spawn two platforms
@@ -48,33 +48,33 @@ class LevelGenerator : MonoBehaviour
                 EndPos += new Vector3(PlatformSize, 0, 0);
                 SpawnPlatform(EndPos + Vector3.down * 5);
                 EndPos += new Vector3(PlatformSize, 0, 0);
-                EndPos += new Vector3(Random.RandomRange(3F, 6F), 0, 0);
+                EndPos += new Vector3(Random.RandomRange(1F, 3F), 0, 0);
                 PossiblySpawnBanana(EndPos);
             }
             else if (r == 2) //Spawn halfpipe
             {
                 SpawnHalfpipe(EndPos + Vector3.down * 6f);
                 EndPos += new Vector3(HalfpipeSize, 0, 0);
-                EndPos += new Vector3(Random.RandomRange(3F, 6F), 0, 0);
+                EndPos += new Vector3(Random.RandomRange(1F, 3F), 0, 0);
                 PossiblySpawnBanana(EndPos);
             }
             else if (r == 3) //Spawn ramp
             {
                 SpawnRamp(EndPos + Vector3.down * 2);
                 EndPos += new Vector3(RampSize, 0, 0);
-                EndPos += new Vector3(Random.RandomRange(3F, 6F), 0, 0);
+                EndPos += new Vector3(Random.RandomRange(1F, 3F), 0, 0);
                 PossiblySpawnBanana(EndPos);
             }
             else if (r == 4) //Spawn space
             { 
 				SpawnPlatform(EndPos + Vector3.down * 5);
                 EndPos += new Vector3(PlatformSize, 0, 0);
-                EndPos += new Vector3(Random.RandomRange(3F, 6F), 0, 0);
+                EndPos += new Vector3(Random.RandomRange(1F, 3F), 0, 0);
                 PossiblySpawnBanana(EndPos);
             }
             else if (r == 5) //Spawn small empty room
             {
-                EndPos += new Vector3(Random.RandomRange(2F, 4F), 0, 0);
+                EndPos += new Vector3(Random.RandomRange(1F, 3F), 0, 0);
                 PossiblySpawnBanana(EndPos);
             }
             else if (r == 6) //Spawn medium space
@@ -86,7 +86,7 @@ class LevelGenerator : MonoBehaviour
             }
             else if (r == 7 ) //Spawn space ramp and banana
             {
-                Vector3 rampPos = EndPos + Vector3.down * -Random.RandomRange(2F, 4F);
+                Vector3 rampPos = EndPos + Vector3.down * -Random.RandomRange(2F, 1F);
                 SpawnRamp(rampPos);
                 SpawnBanana(rampPos + Vector3.up * Random.RandomRange(2F,4F) + Vector3.right * 3);
                 PossiblySpawnBanana(EndPos);
@@ -124,11 +124,11 @@ class LevelGenerator : MonoBehaviour
 
     private void PossiblySpawnBanana(Vector3 pos)
     {
-        if (Random.RandomRange(0f, 1f) < 0.5f)
+        if (Random.RandomRange(0f, 1f) < 0.7f)
         {
             GameObject go = Instantiate(bananaPrefab) as GameObject;
             pos.z += 0.1f;
-            go.transform.position = pos + Vector3.up * Random.RandomRange(2, 4);
+            go.transform.position = pos + Vector3.up * Random.RandomRange(2f, 4f);
         }
     }
 
