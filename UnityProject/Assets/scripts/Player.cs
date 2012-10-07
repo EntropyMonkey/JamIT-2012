@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
 	CharacterController characterController;
 	public Vector2 Velocity = new Vector2(10, 0);
 
-    public float DeathTimePenalty = 2.0f;
+    public float DeathTimePenalty = 0.0f;// Changes to 2.0F on first death
     private float timeSinceDeath = 0F;
 
 	public int id
@@ -50,9 +50,6 @@ public class Player : MonoBehaviour
 
 		points = 0;
 
-        /*var color = renderer.material.color;
-        color.a = 255;
-        renderer.material.color = color;*/
 		renderer.material.color = settings.Color;
 	}
 
@@ -63,7 +60,8 @@ public class Player : MonoBehaviour
 
 	public void Die()
 	{
-        timeSinceDeath = 0;
+		if(!dead)
+			timeSinceDeath = 0;
         dead = true;
 	}
 
@@ -134,6 +132,7 @@ public class Player : MonoBehaviour
 	        }
 			dead = false;
 			timeSinceDeath = 0F;
+			DeathTimePenalty = 2.0f;
 	        Reset(newPos);
 		}
     }
