@@ -21,7 +21,7 @@ class LevelGenerator : MonoBehaviour
         
         for (int i = 0; i < 4; i++)
         {   
-            SpawnPlatform(EndPos);
+            SpawnPlatform(EndPos + Vector3.down * 4);
             EndPos += new Vector3(size*2, 0, 0);
         }
     }

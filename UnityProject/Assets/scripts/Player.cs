@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
 	CharacterController characterController;
 	public Vector2 Velocity = new Vector2(10, 0);
 
-    public float DeathTimePenalty = 0.0f;// Changes to 2.0F on first death
+    public float DeathTimePenalty = 2.2f;// Changes to 2.0F on first death
     private float timeSinceDeath = 0F;
 
 	public int id
@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
 	}
 
     private bool dead = false;
+    bool hasDiedYet = false;
 
 	void Awake()
 	{
@@ -68,6 +69,11 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+        if (!hasDiedYet && Camera.current != null)
+        {
+            hasDiedYet = true;
+            Respawn();
+        }
 		timeSinceDeath += Time.deltaTime;	
         if (dead == true && timeSinceDeath > DeathTimePenalty)
         {
