@@ -6,3 +6,6 @@ UnityProject/obj/
 *.csproj
 *.sln
 *.suo
+UnityProject/Assets/.DS_Store
+
+UnityProject/Assets/scenes/.DS_Store
